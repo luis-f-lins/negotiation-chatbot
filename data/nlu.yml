@@ -1,0 +1,163 @@
+version: "3.0"
+
+nlu:
+- regex: requested_discount
+  examples: |
+    - \\d+(?:\\.\\d+)?%
+    - (\$[0-9]+(\.[0-9]+)?)
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+
+- intent: ask_buy_car
+  examples: |
+    - I want to buy a [Prius](requested_car)
+    - I wanna buy a [Toyota](requested_car)
+    - I'd like to buy a [Kia](requested_car)
+    - I'm thinking of buying a [Sorento](requested_car)
+    - Can I buy a [Hyundai](requested_car)?
+    - i wanna buy a [Tucson](requested_car)
+    - i wanna purchase a [Ford](requested_car)
+    - can you help me buy a [Mustang](requested_car)?
+    - i'm thinking of buying a [Chevrolet](requested_car) car
+    - i wanna buy a car by [Buick](requested_car)
+    - i wanna buy a [Mazda](requested_car)
+    - help me buy a [BMW](requested_car)
+
+- intent: ask_discount
+  examples: |
+    - Could I get a $2000 discount?
+    - Could I get a $2,000 discount?
+    - Could I get a $3000 discount?
+    - Could I get a $3,000 discount?
+    - Is it possible for me to get a $2000 discount?
+    - Is it possible for me to get a $2,000 discount?
+    - Is it possible for me to get a $5000 discount?
+    - Is it possible for me to get a $6,000 discount?
+    - Could you give me a 2000 dollar discount?
+    - Could you give me a 6,000 dollar discount?
+    - Could you give me a 7000 dollar discount?
+    - Could you give me a 9,000 dollar discount?
+    - Can I get a 2000-dollar discount?
+    - Could I get a 20 percente discount?
+    - Can I get a 10 percent discount?
+    - can I get a $3,000 discount?
+    - could I get a $4000 discount?
+
+- intent: finance_car
+  examples: |
+    - I am going to finance the car
+    - I'll be financing it
+    - Financing
+
+- intent: pay_cash
+  examples: |
+    - I'll pay cash
+    - I'll be paying in cash
+    - I'm going to pay in cash
+    - Pay in cash
+
+- intent: refuse_offer
+  examples: |
+    - That won't work
+    - I won't take the offer
+    - No can do
+    - Doesn't work for me
+    - That's still out of my budget
+    - I'll think about it
+    - I have to refuse
+
+- intent: accept_offer
+  examples: |
+    - Great, I'll take it
+    - Thanks, I'll buy the car
+    - I'll take that offer
+    - I'll accept that
+    - Sure, I'll get that car
+    - Sure, I'll buy that car
+    - Yes, I'll buy it
+    - Sounds good

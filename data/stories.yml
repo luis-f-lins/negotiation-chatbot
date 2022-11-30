@@ -1,0 +1,44 @@
+version: "3.0"
+
+rules:
+
+- rule: selecting car
+  steps:
+  - intent: ask_buy_car
+  - action: action_which_car
+
+- rule: asking for discount
+  steps:
+  - intent: ask_discount
+  - action: action_calculate_discount
+
+- rule: accepting offer
+  steps:
+  - intent: accept_offer
+  - action: utter_after_customer_accepted
+
+- rule: refusing offer
+  steps:
+  - intent: refuse_offer
+  - action: utter_after_customer_refused
+
+- rule: financing car
+  steps:
+  - intent: finance_car
+  - action: action_set_payment_method
+
+- rule: paying cash
+  steps:
+  - intent: pay_cash
+  - action: action_set_payment_method
+
+
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy

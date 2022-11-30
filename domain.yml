@@ -1,0 +1,85 @@
+version: "3.0"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - ask_buy_car
+  - ask_discount
+  - finance_car
+  - pay_cash
+  - refuse_offer
+  - accept_offer
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_ask_payment_method:
+  - text: "How would you like to pay for this car?"
+
+  utter_deny_offer:
+  - text: "Sorry, we cannot accept this offer at this time."
+
+  utter_accept_offer:
+  - text: "Okay, we can give you the discount you requested, but only if you complete the purchase today."
+
+  utter_after_customer_refused:
+  - text: "I see, I'm sorry about that. Hope you consider us for your next purchase!"
+
+  utter_after_customer_accepted:
+  - text: "Great! I'll draft up the paperwork and send you as soon as it's ready."
+
+  utter_offer_features:
+  - text: "We can offer you the tech package, valued in $500, for free. Does that work?"
+
+  utter_offer_max_discount:
+  - text: "We can offer you a discount of {discount} ({discount_pc}). Does that work?"
+
+  utter_offer_user_req_discount:
+  - text: "We can offer you that discount of {discount} that you requested. Does that work?"
+
+entities:
+  - requested_car
+  - requested_discount
+
+slots:
+  requested_car:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: requested_car
+  requested_discount:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: requested_discount
+
+actions:
+  - action_which_car
+  - action_calculate_discount
+  - action_set_payment_method
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
