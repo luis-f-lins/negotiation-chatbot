@@ -71,20 +71,14 @@ def start_camunda_process():
 
 def utter_next_available(dispatcher, utterMessageVariables = {}):
     afterCompletionJsonObj = requests.get(taskGetUrl).json()
-    print(afterCompletionJsonObj)
 
     if len(afterCompletionJsonObj) > 0:
-        print(afterCompletionJsonObj[0])
-        print(afterCompletionJsonObj[0]["taskDefinitionKey"])
         next_utter_action = "utter_%s" % (afterCompletionJsonObj[0]["taskDefinitionKey"])
         dispatcher.utter_message(response=next_utter_action, **utterMessageVariables)
 
 
 def complete_task(taskName, dispatcher, postPayload = {}, utterMessageVariables = {}):
     jsonObj = requests.get(taskGetUrl).json()
-
-    print(jsonObj)
-    print(taskName)
 
     currentTaskId = None
 
@@ -144,7 +138,6 @@ class calculate_discount(Action):
 
         all_user_messages = [obj for obj in tracker.events if obj["event"] == 'user']
         last_message = all_user_messages[-1].get("text")
-        print(last_message)
 
         requested_car_name = tracker.get_slot("requested_car")
 
@@ -156,7 +149,6 @@ class calculate_discount(Action):
 
         abs_regex = re.compile(r"\$[-0-9.,]+[-0-9.,]*\b")
         abs_result = abs_regex.findall(last_message)
-        print(abs_result)
 
         car_price = float(found_car["price"].replace(",",""))
 
@@ -198,16 +190,10 @@ class set_payment_method(Action):
         found_car = first(obj for obj in available_cars \
             if obj['name'] == requested_car_name or obj['brand'] == requested_car_name)
 
-        print(user_chosen_method)
-
         if user_chosen_method == 'finance_car':
             payment_method = 'financing'
         elif user_chosen_method == 'pay_cash':
             payment_method = 'cash'
-
-        print(payment_method)
-
-        print(tracker.get_slot("requested_discount"))
 
         total_pc_discount_offered = min(0.05, float(tracker.get_slot("requested_discount"))) \
             if found_car["demand"] == 'low' \

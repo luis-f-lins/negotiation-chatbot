@@ -7,7 +7,32 @@ rules:
   - intent: goodbye
   - action: utter_goodbye
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: selecting car
   steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  - intent: ask_buy_car
+  - action: action_which_car
+
+- rule: asking for discount
+  steps:
+  - intent: ask_discount
+  - action: action_calculate_discount
+
+- rule: accepting offer
+  steps:
+  - intent: accept_offer
+  - action: utter_after_customer_accepted
+
+- rule: refusing offer
+  steps:
+  - intent: refuse_offer
+  - action: utter_after_customer_refused
+
+- rule: financing car
+  steps:
+  - intent: finance_car
+  - action: action_set_payment_method
+
+- rule: paying cash
+  steps:
+  - intent: pay_cash
+  - action: action_set_payment_method
