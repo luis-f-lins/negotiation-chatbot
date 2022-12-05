@@ -26,14 +26,14 @@ available_cars = [{
     "year": "2015",
     "demand": "low"
 },
-{
+    {
     "brand": "Kia",
     "name": "Sorento",
     "price": "35,000.00",
     "year": "2021",
     "demand": "high"
 },
-{
+    {
     "brand": "Ford",
     "name": "Escape",
     "price": "20,000.00",
@@ -42,10 +42,11 @@ available_cars = [{
 }
 ]
 
+
 def first(iterable, default=None):
-  for item in iterable:
-    return item
-  return default
+    for item in iterable:
+        return item
+    return default
 
 
 def start_camunda_process():
@@ -69,15 +70,17 @@ def start_camunda_process():
         processInstanceId
 
 
-def utter_next_available(dispatcher, utterMessageVariables = {}):
+def utter_next_available(dispatcher, utterMessageVariables={}):
     afterCompletionJsonObj = requests.get(taskGetUrl).json()
 
     if len(afterCompletionJsonObj) > 0:
-        next_utter_action = "utter_%s" % (afterCompletionJsonObj[0]["taskDefinitionKey"])
-        dispatcher.utter_message(response=next_utter_action, **utterMessageVariables)
+        next_utter_action = "utter_%s" % (
+            afterCompletionJsonObj[0]["taskDefinitionKey"])
+        dispatcher.utter_message(
+            response=next_utter_action, **utterMessageVariables)
 
 
-def complete_task(taskName, dispatcher, postPayload = {}, utterMessageVariables = {}):
+def complete_task(taskName, dispatcher, postPayload={}, utterMessageVariables={}):
     jsonObj = requests.get(taskGetUrl).json()
 
     currentTaskId = None
@@ -85,7 +88,7 @@ def complete_task(taskName, dispatcher, postPayload = {}, utterMessageVariables 
     for i in jsonObj:
         if i['taskDefinitionKey'] == taskName:
             currentTaskId = i['id']
-    
+
     if currentTaskId == None:
         dispatcher.utter_message(
             text='I\'m sorry, but this task is not available.')
@@ -99,7 +102,6 @@ def complete_task(taskName, dispatcher, postPayload = {}, utterMessageVariables 
     return [FollowupAction("action_listen")]
 
 
-
 class which_car(Action):
 
     def name(self) -> Text:
@@ -111,16 +113,17 @@ class which_car(Action):
 
         requested_car_name = tracker.get_slot("requested_car")
 
-        found_car = first(obj for obj in available_cars \
-            if obj['name'] == requested_car_name or obj['brand'] == requested_car_name)
+        found_car = first(obj for obj in available_cars
+                          if obj['name'] == requested_car_name or obj['brand'] == requested_car_name)
 
         if (found_car == None):
-            dispatcher.utter_message(text="Sorry, we don't have that car available right now")
-        
+            dispatcher.utter_message(
+                text="Sorry, we don't have that car available right now")
+
         else:
             dispatcher.utter_message(text="Okay! So here I have a %s %s %s. \
-                It costs $%s. Can I complete your purchase?" % (found_car['year'], \
-                found_car['brand'], found_car['name'], found_car['price']))
+                It costs $%s. Can I complete your purchase?" % (found_car['year'],
+                                                                found_car['brand'], found_car['name'], found_car['price']))
 
         return [FollowupAction("action_listen")]
 
@@ -136,13 +139,14 @@ class calculate_discount(Action):
 
         start_camunda_process()
 
-        all_user_messages = [obj for obj in tracker.events if obj["event"] == 'user']
+        all_user_messages = [
+            obj for obj in tracker.events if obj["event"] == 'user']
         last_message = all_user_messages[-1].get("text")
 
         requested_car_name = tracker.get_slot("requested_car")
 
-        found_car = first(obj for obj in available_cars \
-            if obj['name'] == requested_car_name or obj['brand'] == requested_car_name)
+        found_car = first(obj for obj in available_cars
+                          if obj['name'] == requested_car_name or obj['brand'] == requested_car_name)
 
         discount = None
         discount_type = None
@@ -150,13 +154,14 @@ class calculate_discount(Action):
         abs_regex = re.compile(r"\$[-0-9.,]+[-0-9.,]*\b")
         abs_result = abs_regex.findall(last_message)
 
-        car_price = float(found_car["price"].replace(",",""))
+        car_price = float(found_car["price"].replace(",", ""))
 
         if abs_result:
             discount_type = 'absolute'
             discount = int(re.sub('[^0-9]+', '', abs_result[0])) / car_price
         else:
-            pc_regex = re.compile(r"\b(?<!\.)(?!0+(?:\.0+)?%)(?:\d|[1-9]\d|100)(?:(?<!100)\.\d+)?%")
+            pc_regex = re.compile(
+                r"\b(?<!\.)(?!0+(?:\.0+)?%)(?:\d|[1-9]\d|100)(?:(?<!100)\.\d+)?%")
             pc_result = pc_regex.findall(last_message)
 
             if pc_result:
@@ -164,9 +169,9 @@ class calculate_discount(Action):
                 discount = int(re.sub('[^0-9]+', '', pc_result[0])) / 100
 
         complete_task("calculate_discount", dispatcher, {"variables": {
-                "requested_discount": {"value": discount},
-                "requested_car": {"value": found_car},
-            }}
+            "requested_discount": {"value": discount},
+            "requested_car": {"value": found_car},
+        }}
         )
 
         return [SlotSet("requested_discount", discount), FollowupAction("action_listen")]
@@ -187,8 +192,8 @@ class set_payment_method(Action):
 
         requested_car_name = tracker.get_slot("requested_car")
 
-        found_car = first(obj for obj in available_cars \
-            if obj['name'] == requested_car_name or obj['brand'] == requested_car_name)
+        found_car = first(obj for obj in available_cars
+                          if obj['name'] == requested_car_name or obj['brand'] == requested_car_name)
 
         if user_chosen_method == 'finance_car':
             payment_method = 'financing'
@@ -199,14 +204,14 @@ class set_payment_method(Action):
             if found_car["demand"] == 'low' \
             else min(0.1, float(tracker.get_slot("requested_discount")))
 
-        car_price = float(found_car["price"].replace(",",""))
+        car_price = float(found_car["price"].replace(",", ""))
 
         abs_discount = total_pc_discount_offered * car_price
 
         complete_task("ask_payment_method", dispatcher, {"variables": {
-                "payment_method": {"value": payment_method},
-            }}, {"discount": "$%s" % ("{:.2f}".format(abs_discount)), \
-            "discount_pc": str(round(total_pc_discount_offered*100)) + '%'}
+            "payment_method": {"value": payment_method},
+        }}, {"discount": "$%s" % ("{:.2f}".format(abs_discount)),
+             "discount_pc": str(round(total_pc_discount_offered*100)) + '%'}
         )
 
         return [FollowupAction("action_listen")]
