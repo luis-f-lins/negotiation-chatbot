@@ -1,0 +1,62 @@
+version: "3.0"
+
+intents:
+  - greet
+  - goodbye
+  - ask_discount
+  - refuse_offer
+  - accept_offer
+  - inform_email
+
+responses:
+  utter_greet:
+    - text: "Hey! How are you?"
+
+  utter_happy:
+    - text: "Great, carry on!"
+
+  utter_goodbye:
+    - text: "Bye"
+
+  utter_ask_user_email:
+    - text: "What is your email address?"
+
+  utter_deny_offer:
+    - text: "Sorry, we cannot offer you any discount at this time."
+
+  utter_after_customer_refused:
+    - text: "I see, I'm sorry about that. I'll transfer you to a human agent."
+
+  utter_after_customer_accepted:
+    - text: "Great! I'll update your plan and send you your new contract as soon as it's ready."
+
+  utter_offer_10_discount:
+    - text: "We can offer you a discount of 10% for 12 months. Does that work?"
+  
+  utter_offer_15_discount:
+    - text: "We can offer you a discount of 15% for 12 months. Does that work?"
+ 
+  utter_offer_extra_data:
+    - text: "We can offer you 10 GB of extra data for 12 months. Does that work?"
+
+actions:
+  - action_start_process
+
+entities:
+  - user_email
+
+slots:
+  user_email:
+    type: text
+    mappings:
+    - type: from_text
+      intent: inform_email
+
+forms:
+  user_email_form:
+    required_slots:
+    - user_email
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

@@ -1,0 +1,76 @@
+version: "3.0"
+
+nlu:
+  - regex: requested_discount
+    examples: |
+      - \\d+(?:\\.\\d+)?%
+      - (\$[0-9]+(\.[0-9]+)?)
+  - intent: greet
+    examples: |
+      - hey
+      - hello
+      - hi
+      - hello there
+      - good morning
+      - good evening
+      - moin
+      - hey there
+      - let's go
+      - hey dude
+      - goodmorning
+      - goodevening
+      - good afternoon
+
+  - intent: goodbye
+    examples: |
+      - good by
+      - cee you later
+      - good night
+      - bye
+      - goodbye
+      - have a nice day
+      - see you around
+      - bye bye
+      - see you later
+
+  - intent: ask_discount
+    examples: |
+      - My plan is too expensive
+      - I can't afford this plan
+      - i wanna cancel my plan
+      - want to cancel my plan
+      - I need something cheaper
+      - Can I get a cheaper plan?
+      - Can I get a discount on my plan?
+      - If I don't get a discount, I'll have to cancel
+
+  - intent: refuse_offer
+    examples: |
+      - That won't work
+      - I won't take the offer
+      - No can do
+      - Doesn't work for me
+      - That's still out of my budget
+      - I'll think about it
+      - I have to refuse
+      - No
+
+  - intent: accept_offer
+    examples: |
+      - Great, I'll take it
+      - I'll take that offer
+      - I'll accept that
+      - Sounds good
+      - Sure
+      - Yes
+      - Absolutely
+      - Yes, thank you
+
+  - intent: inform_email
+    examples: |
+      - My email is [example@example.com](user_email)
+      - [random@example.com](user_email)
+      - Please send it to [anything@example.com](user_email)
+      - Email is [something@example.com](user_email)
+
+

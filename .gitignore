@@ -1,3 +1,4 @@
-models/
-.rasa/
+*/models/
+*/.rasa/
 .DS_Store
+*/.DS_Store

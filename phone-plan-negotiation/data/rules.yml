@@ -1,0 +1,32 @@
+version: "3.0"
+
+rules:
+
+- rule: Ask user email after asking for discount
+  steps:
+  - intent: ask_discount
+  - action: user_email_form
+  - active_loop: user_email_form
+
+- rule: Submit form
+  condition:
+  # Condition that form is active.
+  - active_loop: user_email_form
+  steps:
+  # Form is deactivated
+  - action: user_email_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  # The actions we want to run when the form is submitted.
+  - action: action_start_process
+
+- rule: accepting offer
+  steps:
+  - intent: accept_offer
+  - action: utter_after_customer_accepted
+
+- rule: refusing offer
+  steps:
+  - intent: refuse_offer
+  - action: utter_after_customer_refused

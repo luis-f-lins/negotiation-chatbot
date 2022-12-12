@@ -2,6 +2,11 @@ version: "3.0"
 
 rules:
 
+- rule: When the user starts negotiating
+  steps:
+  - intent: ask_discount
+  - action: necessary_action
+
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
